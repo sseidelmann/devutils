@@ -47,13 +47,16 @@ class CreateCommand extends \Seidelmann\DevUtils\Commands\Phar\Bitbucket\CreateC
         $releaseBranch = $git->getCurrentBranch();
 
         $box->ensureDirectory('download');
-        $path = $box->build('download', false);
+        $path  = $box->build('download', false);
+        $tPath = $path . '-' . $git->getLastTag();
+        rename($path, $tPath);
+        $rPath = $box->getRelativePath($tPath);
 
         $git
             ->fetch()
             ->co('gh-pages')
-            ->add($box->getRelativePath($path))
-            ->commit($box->getRelativePath($path), '[TASK] ADDED the phar')
+            ->add($rPath)
+            ->commit($rPath, '[TASK] ADDED the phar')
             ->push('gh-pages')
             ->co($releaseBranch);
     }
