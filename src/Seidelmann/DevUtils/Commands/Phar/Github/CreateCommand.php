@@ -25,12 +25,18 @@ class CreateCommand extends \Seidelmann\DevUtils\Commands\Phar\Bitbucket\CreateC
      */
     protected function configure()
     {
-        parent::configure();
         $this
-            ->setName('phar:github:create');
+            ->setName('phar:github:create')
+            ->setDescription('Creates a new phar.');
     }
 
-    public function additionalReleaseAction($tag)
+    /**
+     * Executes the command.
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @return void
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         /* @var $box \Seidelmann\DevUtils\Helper\BoxHelper */
         $box = $this->getHelperSet()->get('box');
@@ -46,10 +52,8 @@ class CreateCommand extends \Seidelmann\DevUtils\Commands\Phar\Bitbucket\CreateC
         $git
             ->co('gh-pages')
             ->add($box->getRelativePath($path))
-            ->commit($box->getRelativePath($path), '[TASK] ADDED the phar for version ' . $tag)
+            ->commit($box->getRelativePath($path), '[TASK] ADDED the phar')
             ->push('gh-pages')
             ->co($releaseBranch);
     }
-
-
 }

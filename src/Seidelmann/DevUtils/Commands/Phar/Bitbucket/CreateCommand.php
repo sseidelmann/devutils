@@ -38,18 +38,10 @@ class CreateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $git = $this->getGitHelper();
-
-        $git->createFullRelease(array($this, 'additionalReleaseAction'));
-    }
-
-    public function additionalReleaseAction($tag)
-    {
         /* @var $box \Seidelmann\DevUtils\Helper\BoxHelper */
         $box = $this->getHelperSet()->get('box');
 
         $box->ensureDirectory('build');
         $path = $box->build('build', false);
     }
-
 }
