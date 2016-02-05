@@ -231,6 +231,8 @@ class GitHelper extends AbstractHelper
             new Question(sprintf('Please enter the new tag version (last: %s): ', $lastTag))
         );
 
+        $this->flowReleaseStart();
+
         if ($lastTag) {
             $this->createChangelog($tag);
         }
