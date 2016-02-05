@@ -1,0 +1,18 @@
+{
+  "name": "seidelmann/utils",
+  "license": "MIT",
+  "type": "library",
+  "description": "Utilities",
+
+  "require": {
+    "php": ">=5.4.0",
+    "symfony/console": "~2.6",
+    "symfony/process": "dev-master"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "Seidelmann\\DevUtils\\": "src/Seidelmann/DevUtils/"
+    }
+  }
+}

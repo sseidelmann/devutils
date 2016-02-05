@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+require file_exists(__DIR__.'/vendor/autoload.php') ? __DIR__.'/vendor/autoload.php' : __DIR__.'/../../autoload.php';
+
+// Initialize the application
+$app = new \Seidelmann\DevUtils\Application('Development utilities', '@package_version@');
+
+// Add the commands
+$app->add(new \Seidelmann\DevUtils\Commands\Git\Release\CreateCommand());
+$app->add(new \Seidelmann\DevUtils\Commands\Git\Util\RemoveTagCommand());
+
+// Add the helpers
+$app->getHelperSet()->set(new \Seidelmann\DevUtils\Helper\GitHelper());
+$app->getHelperSet()->set(new \Seidelmann\DevUtils\Helper\ChangelogHelper());
+
+// run the shit
+$app->run();
