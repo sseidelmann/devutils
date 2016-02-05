@@ -5,3 +5,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.0] - [2016-02-05]
 
 ## [1.0.0] - [2016-02-05]
+
+## [1.0.0] - [2016-02-05]
