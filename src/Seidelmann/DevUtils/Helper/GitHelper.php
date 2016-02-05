@@ -7,21 +7,23 @@
  */
 
 namespace Seidelmann\DevUtils\Helper;
-use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Process\ProcessBuilder;
 
 /**
  * Class GitHelper
  * @package Seidelmann\DevUtils\Helper
  * @author Sebastian Seidelmann <sebastian.seidelmann@googlemail.com>
  */
-class GitHelper extends Helper
+class GitHelper extends AbstractHelper
 {
     /**
-     * Saves the working directory.
-     * @var string
+     * Initialize the helper.
+     * @return void
      */
-    private $workingDirectory;
+    public function init()
+    {
+        $this->setCommandPrefix('git');
+    }
+
 
     /**
      * Returns the canonical name of this helper.
@@ -182,36 +184,11 @@ class GitHelper extends Helper
     }
 
     /**
-     * Sets the working directory.
-     * @param string $workingDirectory
-     * @return void
-     */
-    public function setWorkingDirectory($workingDirectory)
-    {
-        $this->workingDirectory = $workingDirectory;
-    }
-
-    /**
      * Checks if the project is a git project.
      * @return bool
      */
     public function available()
     {
-        return is_dir($this->workingDirectory . '.git');
-    }
-
-    /**
-     * Executes a git command.
-     * @param string $command
-     * @return array
-     */
-    private function execute($command)
-    {
-        $return = array();
-        $command = sprintf('cd %s && git %s', $this->workingDirectory, $command);
-
-        exec($command, $return);
-
-        return $return;
+        return is_dir($this->getWorkingDirectory() . '.git');
     }
 }

@@ -26,7 +26,6 @@ class Command extends BaseCommand
     {
         /* @var $helper GitHelper */
         $helper = $this->getHelper('git');
-        $helper->setWorkingDirectory($this->getWorkingDirectory());
 
         return $helper;
     }
@@ -39,7 +38,6 @@ class Command extends BaseCommand
     {
         /* @var $helper ChangelogHelper */
         $helper = $this->getHelper('changelog');
-        $helper->setWorkingDirectory($this->getWorkingDirectory());
 
         return $helper;
     }

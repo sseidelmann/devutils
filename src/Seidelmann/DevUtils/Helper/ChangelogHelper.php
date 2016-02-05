@@ -14,15 +14,13 @@ use Symfony\Component\Console\Helper\Helper;
  * @package sseidelmann\utils
  * @author Sebastian Seidelmann <sebastian.seidelmann@googlemail.com>
  */
-class ChangelogHelper extends Helper
+class ChangelogHelper extends AbstractHelper
 {
-    const CHANGELOG_FILENAME = 'CHANGELOG.md';
-
     /**
-     * Saves the working directory.
+     * Saves the changelog filename.
      * @var string
      */
-    private $workingDirectory;
+    const CHANGELOG_FILENAME = 'CHANGELOG.md';
 
     /**
      * Returns the canonical name of this helper.
@@ -32,16 +30,6 @@ class ChangelogHelper extends Helper
     public function getName()
     {
         return 'changelog';
-    }
-
-    /**
-     * Sets the working directory.
-     * @param string $workingDirectory
-     * @return void
-     */
-    public function setWorkingDirectory($workingDirectory)
-    {
-        $this->workingDirectory = $workingDirectory;
     }
 
     /**
@@ -104,7 +92,7 @@ class ChangelogHelper extends Helper
             return self::CHANGELOG_FILENAME;
         }
 
-        return $this->workingDirectory . self::CHANGELOG_FILENAME;
+        return $this->getWorkingDirectory() . self::CHANGELOG_FILENAME;
     }
 
     /**
