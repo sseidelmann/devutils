@@ -8,6 +8,8 @@
 namespace Seidelmann\DevUtils\Helper;
 
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class AbstractHelper
@@ -29,6 +31,18 @@ abstract class AbstractHelper extends Helper
     private $commandPrefix;
 
     /**
+     * Saves the input.
+     * @var InputInterface
+     */
+    private $input;
+
+    /**
+     * Saves the output
+     * @var OutputInterface
+     */
+    private $output;
+
+    /**
      * Initialize the helper.
      * @return void
      */
@@ -45,6 +59,18 @@ abstract class AbstractHelper extends Helper
     public function setWorkingDirectory($workingDirectory)
     {
         $this->workingDirectory = $workingDirectory;
+    }
+
+    /**
+     * Sets the io.
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @return void
+     */
+    public function setIO(InputInterface $input, OutputInterface $output)
+    {
+        $this->input = $input;
+        $this->output = $output;
     }
 
     /**
@@ -81,5 +107,37 @@ abstract class AbstractHelper extends Helper
         exec($command, $return);
 
         return $return;
+    }
+
+    /**
+     * Returns the input.
+     * @return InputInterface
+     */
+    protected function getInput()
+    {
+        return $this->input;
+    }
+
+    /**
+     * Returns the output.
+     * @return OutputInterface
+     */
+    protected function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
+     * Creates the directory if not existing.
+     * @param string $path
+     * @return string
+     */
+    public function ensureDirectory($path)
+    {
+        if (!is_dir($this->getWorkingDirectory() . $path)) {
+            mkdir($this->getWorkingDirectory() . $path);
+        }
+
+        return $this->getWorkingDirectory() . $path;
     }
 }

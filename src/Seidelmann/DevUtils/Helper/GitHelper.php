@@ -7,6 +7,9 @@
  */
 
 namespace Seidelmann\DevUtils\Helper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * Class GitHelper
@@ -22,8 +25,11 @@ class GitHelper extends AbstractHelper
     public function init()
     {
         $this->setCommandPrefix('git');
-    }
 
+        if (!$this->available()) {
+            throw new \Exception(sprintf('%s is not a git project', $this->getWorkingDirectory()));
+        }
+    }
 
     /**
      * Returns the canonical name of this helper.
@@ -44,6 +50,15 @@ class GitHelper extends AbstractHelper
     {
         $this->execute('checkout ' . $branch);
         return $this;
+    }
+
+    /**
+     * Returns the current branch.
+     * @return string
+     */
+    public function getCurrentBranch()
+    {
+        return current($this->execute('rev-parse --abbrev-ref HEAD'));
     }
 
     /**
@@ -190,5 +205,64 @@ class GitHelper extends AbstractHelper
     public function available()
     {
         return is_dir($this->getWorkingDirectory() . '.git');
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param $additionalAction
+     */
+    public function createFullRelease($additionalAction = null)
+    {
+        /* @var $question \Symfony\Component\Console\Helper\QuestionHelper */
+        $question = $this->getHelperSet()->get('question');
+
+        $this->fetch()
+            ->co('master')
+            ->pull()
+            ->co('develop')
+            ->pull();
+
+        $tag = $question->ask(
+            $this->getInput(),
+            $this->getOutput(),
+            new Question(sprintf('Please enter the new tag version (last: %s): ', $this->getLastTag()))
+        );
+
+        $this->createChangelog($tag);
+
+        if (null !== $additionalAction && (is_array($additionalAction) && method_exists($additionalAction[0], $additionalAction[1]))) {
+            call_user_func($additionalAction, $tag);
+        }
+
+        $this->flowReleaseFinish($tag);
+
+        $this
+            ->push('master')
+            ->push('develop')
+            ->pushTags();
+    }
+
+    /**
+     * Creates the changelog file.
+     * @param string $tag
+     * @return void
+     */
+    private function createChangelog($tag)
+    {
+        /* @var $changelog \Seidelmann\DevUtils\Helper\ChangelogHelper */
+        $changelog     = $this->getHelperSet()->get('changelog');
+
+        $this->getOutput()->writeln('Create the changelog ...');
+
+        $changelogFile = $changelog->getFilePath(true);
+        $changelog->create($tag, $this->getChangelogLines());
+
+        $this
+            ->add($changelogFile)
+            ->commit(
+                $changelogFile,
+                sprintf('[TASK][RELEASE %s] ADDED the current release in changelog file', $tag)
+            );
     }
 }

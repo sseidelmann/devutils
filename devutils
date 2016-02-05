@@ -7,12 +7,18 @@ require file_exists(__DIR__.'/vendor/autoload.php') ? __DIR__.'/vendor/autoload.
 $app = new \Seidelmann\DevUtils\Application('Development utilities', '@package_version@');
 
 // Add the commands
+$app->add(new \Seidelmann\DevUtils\Commands\AboutCommand());
 $app->add(new \Seidelmann\DevUtils\Commands\Git\Release\CreateCommand());
 $app->add(new \Seidelmann\DevUtils\Commands\Git\Util\RemoveTagCommand());
+$app->add(new \Seidelmann\DevUtils\Commands\Phar\Bitbucket\CreateCommand());
+$app->add(new \Seidelmann\DevUtils\Commands\Phar\Github\CreateCommand());
 
 // Add the helpers
 $app->getHelperSet()->set(new \Seidelmann\DevUtils\Helper\GitHelper());
 $app->getHelperSet()->set(new \Seidelmann\DevUtils\Helper\ChangelogHelper());
+$app->getHelperSet()->set(new \Seidelmann\DevUtils\Helper\BoxHelper());
+
+$app->setDefaultCommand('about');
 
 // run the shit
 $app->run();
