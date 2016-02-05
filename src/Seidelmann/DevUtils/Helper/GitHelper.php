@@ -130,9 +130,9 @@ class GitHelper extends AbstractHelper
      * Starts a git flow release.
      * @return GitHelper
      */
-    public function flowReleaseStart()
+    public function flowReleaseStart($version)
     {
-        $this->execute('flow release start');
+        $this->execute('flow release start ' . $version);
         return $this;
     }
 
@@ -223,13 +223,19 @@ class GitHelper extends AbstractHelper
             ->co('develop')
             ->pull();
 
+        $lastTag = $this->getLastTag();
+
         $tag = $question->ask(
             $this->getInput(),
             $this->getOutput(),
-            new Question(sprintf('Please enter the new tag version (last: %s): ', $this->getLastTag()))
+            new Question(sprintf('Please enter the new tag version (last: %s): ', $lastTag))
         );
 
-        $this->createChangelog($tag);
+        $this->flowReleaseStart($tag);
+
+        if (strlen($lastTag) > 0) {
+            $this->createChangelog($tag);
+        }
 
         if (null !== $additionalAction && (is_array($additionalAction) && method_exists($additionalAction[0], $additionalAction[1]))) {
             call_user_func($additionalAction, $tag);

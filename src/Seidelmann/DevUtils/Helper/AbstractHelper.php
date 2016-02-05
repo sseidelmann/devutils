@@ -96,7 +96,7 @@ abstract class AbstractHelper extends Helper
      * @param string $command
      * @return array
      */
-    protected function execute($command)
+    protected function execute($command, $debug = false)
     {
         $return = array();
         if ($this->commandPrefix) {
@@ -104,6 +104,9 @@ abstract class AbstractHelper extends Helper
         }
         $command = sprintf('cd %s && %s', $this->getWorkingDirectory(), $command);
 
+        if ($debug) {
+            echo "> " . $command . PHP_EOL;
+        }
         exec($command, $return);
 
         return $return;

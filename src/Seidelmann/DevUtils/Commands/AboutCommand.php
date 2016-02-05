@@ -48,6 +48,7 @@ All available commands:
    <comment>git:util:removetag</comment>               Helper for deleting tags
  <info>Phar</info>
    <comment>phar:bitbucket:create</comment>            Creates a PHAR for bitbucket repositories
+   <comment>phar:github:create</comment>               Creates a PHAR for github repositories
 
 COMMAND_HELP;
 
