@@ -233,7 +233,7 @@ class GitHelper extends AbstractHelper
 
         $this->flowReleaseStart($tag);
 
-        if ($lastTag) {
+        if (strlen($lastTag) > 0) {
             $this->createChangelog($tag);
         }
 
