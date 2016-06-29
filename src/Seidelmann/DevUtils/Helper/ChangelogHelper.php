@@ -45,6 +45,11 @@ class ChangelogHelper extends AbstractHelper
         return 'changelog';
     }
 
+    /**
+     * Update the changelog
+     * @param string  $oldVersion
+     * @param Version $newVersion
+     */
     public function update($oldVersion, Version $newVersion)
     {
         $releaseContent = [];
