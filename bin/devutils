@@ -1,10 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-require file_exists(__DIR__.'/vendor/autoload.php') ? __DIR__.'/vendor/autoload.php' : __DIR__.'/../../autoload.php';
+// autoloading
+require file_exists(__DIR__.'/../vendor/autoload.php') ? __DIR__.'/../vendor/autoload.php' : __DIR__.'/../../vendor/autoload.php';
 
 // Initialize the application
-$app = new \Seidelmann\DevUtils\Application('Development utilities', '@package_version@');
+$app = new \Seidelmann\DevUtils\Application('@name@', '@git-version@');
 
 // Add the commands
 $app->add(new \Seidelmann\DevUtils\Commands\AboutCommand());
