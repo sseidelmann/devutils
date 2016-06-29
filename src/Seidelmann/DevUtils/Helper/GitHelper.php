@@ -254,6 +254,10 @@ class GitHelper extends AbstractHelper
             $commits[] = $commit;
         }
 
+        usort($commits, function (Commit $a, Commit $b) {
+            return ($a->getDate() < $b->getDate()) ? 1 : -1;
+        });
+
         return $commits;
     }
 
