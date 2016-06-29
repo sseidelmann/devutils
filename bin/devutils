@@ -9,10 +9,10 @@ $app = new \Seidelmann\DevUtils\Application('@name@', '@git-version@');
 
 // Add the commands
 $app->add(new \Seidelmann\DevUtils\Commands\AboutCommand());
-$app->add(new \Seidelmann\DevUtils\Commands\Git\Release\CreateCommand());
+/*$app->add(new \Seidelmann\DevUtils\Commands\Git\Release\CreateCommand());
 $app->add(new \Seidelmann\DevUtils\Commands\Git\Util\RemoveTagCommand());
 $app->add(new \Seidelmann\DevUtils\Commands\Phar\Bitbucket\CreateCommand());
-$app->add(new \Seidelmann\DevUtils\Commands\Phar\Github\CreateCommand());
+$app->add(new \Seidelmann\DevUtils\Commands\Phar\Github\CreateCommand());*/
 $app->add(new \Seidelmann\DevUtils\Commands\Git\Changelog\CreateCommand());
 
 // Add the helpers
