@@ -28,7 +28,7 @@ class GitHelper extends AbstractHelper
         $this->setCommandPrefix('git');
 
         if (!$this->available()) {
-            throw new \Exception(sprintf('%s is not a git project', $this->getWorkingDirectory()));
+            // throw new \Exception(sprintf('%s is not a git project', $this->getWorkingDirectory()));
         }
     }
 

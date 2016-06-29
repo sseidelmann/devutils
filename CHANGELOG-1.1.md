@@ -7,6 +7,10 @@ in 1.1 minor versions.
 This project adheres to [Semantic Versioning](http://semver.org/).
 Changelog created by [devutils](https://github.com/sseidelmann/devutils).
 
+* 1.1.1 (2016-06-29)
+
+ * task Removed the exception while not in a git folder (sebastianseidelmann)
+
 * 1.1.0 (2016-06-29)
 
  * task Removed all other commands (sebastianseidelmann)
