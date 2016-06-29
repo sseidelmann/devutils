@@ -208,6 +208,8 @@ class GitHelper extends AbstractHelper
      */
     public function getCommits($from = null, $to = 'HEAD')
     {
+        $defaultTZ = date_default_timezone_get();
+
         $formatMapping = [
             'subject'      => '%s',
             'hash'         => '%h',
@@ -239,6 +241,7 @@ class GitHelper extends AbstractHelper
 
             $date = new \DateTime();
             $date->setTimestamp(strtotime($commitValues['author_date']));
+            $date->setTimezone(new \DateTimeZone($defaultTZ));
 
             $commit = new Commit();
             $commit
