@@ -7,6 +7,7 @@
  */
 
 namespace Seidelmann\DevUtils\Helper;
+use Seidelmann\DevUtils\Model\Commit;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -183,6 +184,7 @@ class GitHelper extends AbstractHelper
     /**
      * Returns the commits.
      * @param string $current
+     * @deprecated
      * @return array
      */
     public function getChangelogLines($current = null, $format = '%s')
@@ -196,6 +198,67 @@ class GitHelper extends AbstractHelper
             $current,
             $format
         ));
+    }
+
+    /**
+     * Returns the log.
+     * @param string $from
+     * @param string $to
+     * @return Commit[]
+     */
+    public function getCommits($from = null, $to = 'HEAD')
+    {
+        $defaultTZ = date_default_timezone_get();
+
+        $formatMapping = [
+            'subject'      => '%s',
+            'hash'         => '%h',
+            'author_email' => '%ae',
+            'author_name'  => '%an',
+            'author_date'  => '%aD'
+        ];
+        $delimiter = '!!!';
+
+        $commits = [];
+        if (null === $from) {
+            $from = $this->getLastTag();
+        }
+
+        $log = $this->execute(sprintf(
+            'log %s...%s --pretty=format:"%s" --reverse | grep -v Merge',
+            $from,
+            $to,
+            implode($delimiter, array_values($formatMapping))
+        ));
+
+        foreach ($log as $line) {
+            $commitValues = array_combine(array_keys($formatMapping), explode('!!!', $line));
+            $author = new Commit\Author();
+            $author
+                ->setEmail($commitValues['author_email'])
+                ->setName($commitValues['author_name'])
+            ;
+
+            $date = new \DateTime();
+            $date->setTimestamp(strtotime($commitValues['author_date']));
+            $date->setTimezone(new \DateTimeZone($defaultTZ));
+
+            $commit = new Commit();
+            $commit
+                ->setMessage($commitValues['subject'])
+                ->setHash($commitValues['hash'])
+                ->setAuthor($author)
+                ->setDate($date)
+            ;
+
+            $commits[] = $commit;
+        }
+
+        usort($commits, function (Commit $a, Commit $b) {
+            return ($a->getDate() < $b->getDate()) ? 1 : -1;
+        });
+
+        return $commits;
     }
 
     /**
