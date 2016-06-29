@@ -10,10 +10,6 @@
     "symfony/process": "^2.1"
   },
 
-  "require-dev": {
-    "kherge/box": "^2.7"
-  },
-
   "autoload": {
     "psr-4": {
       "Seidelmann\\DevUtils\\": "src/Seidelmann/DevUtils/"
