@@ -79,8 +79,8 @@ class Version
             $this->major,
             $this->minor,
             $this->patch,
-            strlen($this->build) === 0 ?: '-' . $this->build,
-            strlen($this->prtag) === 0 ?: '-' . $this->prtag
+            strlen($this->build) === 0 ? '' : '-' . $this->build,
+            strlen($this->prtag) === 0 ? '' : '-' . $this->prtag
         );
     }
 
@@ -102,7 +102,49 @@ class Version
         $this->major = $matches[2];
         $this->minor = $matches[4];
         $this->patch = $matches[6];
-        $this->build = $matches[8];
-        $this->prtag = $matches[10];
+        $this->build = isset($matches[8]) ? $matches[8] : '';
+        $this->prtag = isset($matches[10]) ? $matches[10] : '';
     }
+
+    /**
+     * @return int
+     */
+    public function getMajor()
+    {
+        return $this->major;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinor()
+    {
+        return $this->minor;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPatch()
+    {
+        return $this->patch;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBuild()
+    {
+        return $this->build;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrtag()
+    {
+        return $this->prtag;
+    }
+
+
 }
