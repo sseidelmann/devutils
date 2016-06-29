@@ -17,6 +17,11 @@ class Commit
     private $message;
 
     /**
+     * @var string
+     */
+    private $messageRaw;
+
+    /**
      * @var Author
      */
     private $author;
@@ -32,6 +37,18 @@ class Commit
     private $date;
 
     /**
+     * Saves the commit type.
+     * @var string
+     */
+    private $commitType = 'task';
+
+    /**
+     * Saves the ticket.
+     * @var string
+     */
+    private $ticket = false;
+
+    /**
      * @return string
      */
     public function getMessage()
@@ -40,12 +57,49 @@ class Commit
     }
 
     /**
+     * Returns the commit type.
+     * @return string
+     */
+    public function getCommitType()
+    {
+        return $this->commitType;
+    }
+
+    /**
+     * @return string|bool
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
+    }
+
+    /**
+     * Parses the message.
+     * @return string
+     */
+    private function parseMessage()
+    {
+        if (preg_match('/\[([^\]]+)\].*/', $this->messageRaw, $matches)) {
+            $this->messageRaw = str_replace(sprintf('[%s]', $matches[1]), '', $this->messageRaw);
+            $this->commitType = strtolower($matches[1]);
+        }
+
+        if (preg_match('/\[([^\]]+)\].*/', $this->messageRaw, $matches)) {
+            $this->messageRaw = str_replace(sprintf('[%s]', $matches[1]), '', $this->messageRaw);
+            $this->ticket = strtolower($matches[1]);
+        }
+
+        return trim($this->messageRaw);
+    }
+
+    /**
      * @param string $message
      * @return Commit
      */
     public function setMessage($message)
     {
-        $this->message = $message;
+        $this->messageRaw = $message;
+        $this->message    = $this->parseMessage();
         return $this;
     }
 
