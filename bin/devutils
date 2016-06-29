@@ -5,7 +5,7 @@
 require file_exists(__DIR__.'/../vendor/autoload.php') ? __DIR__.'/../vendor/autoload.php' : __DIR__.'/../../vendor/autoload.php';
 
 // Initialize the application
-$app = new \Seidelmann\DevUtils\Application('Development Utilities', '@git-version@');
+$app = new \Seidelmann\DevUtils\Application('@name@', '@git-version@');
 
 // Add the commands
 $app->add(new \Seidelmann\DevUtils\Commands\AboutCommand());

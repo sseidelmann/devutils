@@ -19,5 +19,8 @@
   "git-version": "git-version",
   "main": "bin/devutils",
   "output": "devutils.phar",
-  "stub": true
+  "stub": true,
+  "replacements": {
+    "name": "Development Utilities"
+  }
 }
